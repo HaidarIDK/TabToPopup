@@ -1,0 +1,31 @@
+{
+  "manifest_version": 3,
+  "name": "Tab To Popup Window",
+  "version": "1.0.0",
+  "description": "Convert the current tab into a standalone popup window",
+  "permissions": [
+    "tabs",
+    "contextMenus",
+    "activeTab"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Convert tab to popup window",
+    "default_icon": "icon.png"
+  },
+  "icons": {
+    "48": "icon.png"
+  },
+  "commands": {
+    "convert-to-popup": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+Y",
+        "mac": "Command+Shift+Y"
+      },
+      "description": "Convert current tab to popup window"
+    }
+  }
+}

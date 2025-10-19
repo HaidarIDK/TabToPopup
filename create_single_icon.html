@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Single Icon</title>
+</head>
+<body>
+    <h2>Creating extension icon...</h2>
+    <canvas id="canvas" style="display: none;"></canvas>
+    
+    <script>
+        function createIcon() {
+            const canvas = document.getElementById('canvas');
+            canvas.width = 48;
+            canvas.height = 48;
+            const ctx = canvas.getContext('2d');
+            
+            // Clear canvas
+            ctx.clearRect(0, 0, 48, 48);
+            
+            // Create gradient background
+            const gradient = ctx.createLinearGradient(0, 0, 48, 48);
+            gradient.addColorStop(0, '#667eea');
+            gradient.addColorStop(1, '#764ba2');
+            
+            // Draw background
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, 48, 48);
+            
+            // Draw white popup windows
+            ctx.fillStyle = 'white';
+            
+            // Main window (larger)
+            const mainWidth = 48 * 0.7;
+            const mainHeight = 48 * 0.5;
+            const mainX = (48 - mainWidth) / 2;
+            const mainY = 48 * 0.3;
+            ctx.fillRect(mainX, mainY, mainWidth, mainHeight);
+            
+            // Popup window (smaller, offset)
+            const popupWidth = 48 * 0.4;
+            const popupHeight = 48 * 0.25;
+            const popupX = (48 - popupWidth) / 2 - 48 * 0.1;
+            const popupY = 48 * 0.15;
+            ctx.fillRect(popupX, popupY, popupWidth, popupHeight);
+            
+            // Convert to blob and trigger download
+            canvas.toBlob(function(blob) {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'icon.png';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                
+                document.body.innerHTML = '<h2>Icon created! Save the downloaded icon.png file to your extension folder.</h2>';
+            }, 'image/png');
+        }
+        
+        // Auto-create icon when page loads
+        window.onload = function() {
+            setTimeout(createIcon, 500);
+        };
+    </script>
+</body>
+</html>

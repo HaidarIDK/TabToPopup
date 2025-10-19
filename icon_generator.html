@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Icon Generator for Tab to Popup Extension</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f0f0f0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        canvas {
+            border: 2px solid #ddd;
+            margin: 10px;
+            display: inline-block;
+        }
+        .icon-section {
+            margin: 20px 0;
+            text-align: center;
+        }
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #764ba2;
+        }
+        .instructions {
+            background: #e8f4f8;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Tab to Popup Window Extension - Icon Generator</h1>
+        
+        <div class="instructions">
+            <h3>Instructions:</h3>
+            <ol>
+                <li>Click the "Generate All Icons" button below</li>
+                <li>Your browser will download 4 PNG files</li>
+                <li>Move these files to the <code>icons/</code> folder in your extension directory</li>
+                <li>Rename them to: icon16.png, icon32.png, icon48.png, icon128.png</li>
+            </ol>
+        </div>
+
+        <div class="icon-section">
+            <h3>Preview:</h3>
+            <canvas id="canvas16" width="16" height="16"></canvas>
+            <canvas id="canvas32" width="32" height="32"></canvas>
+            <canvas id="canvas48" width="48" height="48"></canvas>
+            <canvas id="canvas128" width="128" height="128"></canvas>
+        </div>
+
+        <div class="icon-section">
+            <button onclick="generateAllIcons()">Generate All Icons</button>
+            <button onclick="generateIcon(16)">16x16</button>
+            <button onclick="generateIcon(32)">32x32</button>
+            <button onclick="generateIcon(48)">48x48</button>
+            <button onclick="generateIcon(128)">128x128</button>
+        </div>
+    </div>
+
+    <script>
+        function createIcon(size) {
+            const canvas = document.getElementById(`canvas${size}`);
+            const ctx = canvas.getContext('2d');
+            
+            // Clear canvas
+            ctx.clearRect(0, 0, size, size);
+            
+            // Create gradient background
+            const gradient = ctx.createLinearGradient(0, 0, size, size);
+            gradient.addColorStop(0, '#667eea');
+            gradient.addColorStop(1, '#764ba2');
+            
+            // Draw background
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, size, size);
+            
+            // Draw white popup windows
+            ctx.fillStyle = 'white';
+            
+            // Main window (larger)
+            const mainWidth = size * 0.7;
+            const mainHeight = size * 0.5;
+            const mainX = (size - mainWidth) / 2;
+            const mainY = size * 0.3;
+            ctx.fillRect(mainX, mainY, mainWidth, mainHeight);
+            
+            // Popup window (smaller, offset)
+            const popupWidth = size * 0.4;
+            const popupHeight = size * 0.25;
+            const popupX = (size - popupWidth) / 2 - size * 0.1;
+            const popupY = size * 0.15;
+            ctx.fillRect(popupX, popupY, popupWidth, popupHeight);
+            
+            return canvas;
+        }
+        
+        function generateIcon(size) {
+            const canvas = createIcon(size);
+            
+            // Convert to PNG and download
+            canvas.toBlob(function(blob) {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `icon${size}.png`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }, 'image/png');
+        }
+        
+        function generateAllIcons() {
+            const sizes = [16, 32, 48, 128];
+            sizes.forEach((size, index) => {
+                setTimeout(() => {
+                    generateIcon(size);
+                }, index * 200); // Delay each download by 200ms
+            });
+        }
+        
+        // Generate previews on load
+        window.onload = function() {
+            [16, 32, 48, 128].forEach(size => createIcon(size));
+        };
+    </script>
+</body>
+</html>
