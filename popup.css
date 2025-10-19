@@ -57,6 +57,46 @@ body {
     transform: translateY(0);
 }
 
+.options {
+    margin-bottom: 20px;
+}
+
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-size: 14px;
+    color: #555;
+    user-select: none;
+}
+
+.checkbox-container input[type="checkbox"] {
+    margin-right: 8px;
+    cursor: pointer;
+}
+
+.checkbox-container:hover {
+    color: #333;
+}
+
+.bring-to-front-button {
+    width: 100%;
+    padding: 8px 16px;
+    background: #28a745;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    margin-top: 10px;
+}
+
+.bring-to-front-button:hover {
+    background: #218838;
+}
+
 .info {
     background: #f8f9fa;
     padding: 15px;
